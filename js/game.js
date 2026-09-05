@@ -98,10 +98,10 @@
         categories.push(next);
         return true;
       },
-      addQuestion(category, questionText, answer) {
-        const value = this.getAvailableValue(category);
-        if (!categories.includes(category) || !value || !questionText.trim() || !answer.trim()) return false;
-        questions.push({ category, value, question: questionText.trim(), answer: answer.trim() });
+      addQuestion(category, value, questionText, answer) {
+        const numericValue = Number(value);
+        if (!categories.includes(category) || !Bilik.VALUES.includes(numericValue) || this.getQuestion(category, numericValue) || !questionText.trim() || !answer.trim()) return false;
+        questions.push({ category, value: numericValue, question: questionText.trim(), answer: answer.trim() });
         return true;
       },
       reset() {
