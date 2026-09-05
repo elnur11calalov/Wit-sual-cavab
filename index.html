@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bilik Yarışı</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;700;800&family=Teko:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <main class="stage">
+      <header class="topbar">
+        <div class="brand">
+          <h1>Bilik Yarışı</h1>
+          <div class="brand-partner">
+            <img src="./media/Logo.jpg" alt="Wise Intellectual Teachers loqosu" />
+            <span>Wise Intellectual Teachers</span>
+          </div>
+        </div>
+        <button type="button" class="reset-btn" id="reset-game">Yeni oyun</button>
+      </header>
+
+      <section class="board-wrap" aria-label="Oyun sahəsi">
+        <div class="board-scroll">
+          <div id="board-root"></div>
+        </div>
+        <div id="question-overlay" class="overlay" aria-hidden="true"></div>
+      </section>
+
+      <section id="scoreboard" aria-label="Komanda xalları"></section>
+    </main>
+
+    <script src="./js/questions.js"></script>
+    <script src="./js/game.js"></script>
+    <script src="./js/render.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
