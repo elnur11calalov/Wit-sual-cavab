@@ -2,6 +2,7 @@
   const boardRoot = document.querySelector("#board-root");
   const overlay = document.querySelector("#question-overlay");
   const scoreRoot = document.querySelector("#scoreboard");
+  const editorModal = document.querySelector("#editor-modal");
   const resetBtn = document.querySelector("#reset-game");
   const game = Bilik.createGame();
 
@@ -13,14 +14,40 @@
   }
 
   function addQuestion(category) {
-    const question = window.prompt(`${category} üçün sualı yazın:`);
-    if (question === null) return;
-    const answer = window.prompt("Düzgün cavabı yazın:");
-    if (answer === null) return;
-    if (!game.addQuestion(category, question, answer)) {
-      window.alert("Sual və cavab doldurulmalıdır. Hər mövzuda ən çox 5 sual ola bilər.");
-    }
-    paint();
+    const availableValues = Bilik.VALUES.filter((value) => !game.getQuestion(category, value));
+    if (!availableValues.length) return;
+    editorModal.classList.add("open");
+    editorModal.setAttribute("aria-hidden", "false");
+    const form = document.createElement("form");
+    form.className = "question-editor";
+    form.innerHTML = `
+      <button type="button" class="editor-close" aria-label="Pəncərəni bağla">×</button>
+      <p class="editor-kicker"></p>
+      <h2>Yeni sual əlavə edin</h2>
+      <label>Sual <textarea name="question" required maxlength="400" placeholder="Sualı buraya yazın"></textarea></label>
+      <label>Düzgün cavab <input name="answer" required maxlength="200" placeholder="Cavabı yazın" /></label>
+      <label>Bal dəyəri <select name="value">${availableValues.map((value) => `<option value="${value}">${value} bal</option>`).join("")}</select></label>
+      <button class="primary-btn" type="submit">Sualı əlavə et</button>
+    `;
+    form.querySelector(".editor-kicker").textContent = category;
+    const close = () => {
+      editorModal.classList.remove("open");
+      editorModal.setAttribute("aria-hidden", "true");
+      editorModal.replaceChildren();
+    };
+    form.querySelector(".editor-close").addEventListener("click", close);
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      if (!game.addQuestion(category, data.get("value"), data.get("question"), data.get("answer"))) {
+        window.alert("Bu bal dəyərində sual artıq var və ya bütün sahələr doldurulmayıb.");
+        return;
+      }
+      close();
+      paint();
+    });
+    editorModal.replaceChildren(form);
+    form.querySelector("textarea").focus();
   }
 
   function paint() {
