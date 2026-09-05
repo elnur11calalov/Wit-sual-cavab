@@ -101,6 +101,12 @@
     } else {
       game.getTeams().forEach((team) => {
         const already = game.wasAwarded(team.id);
+        const teamActions = document.createElement("div");
+        teamActions.className = "team-actions";
+        const teamName = document.createElement("p");
+        teamName.className = "team-action-name";
+        teamName.textContent = team.name;
+        teamActions.appendChild(teamName);
         [[`+${current.value}`, handlers.award, "award-btn"], [`−${current.value}`, handlers.penalize, "award-btn penalty-btn"]].forEach(([text, action, className]) => {
           const button = document.createElement("button");
           button.type = "button";
@@ -108,8 +114,9 @@
           button.disabled = already;
           button.textContent = already ? `${team.name} · qeyd edildi` : `${team.name} · ${text}`;
           button.addEventListener("click", () => action(team.id));
-          actions.appendChild(button);
+          teamActions.appendChild(button);
         });
+        actions.appendChild(teamActions);
       });
       card.append(close, kicker, question, answerBlock, actions);
     }
